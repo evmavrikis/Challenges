@@ -66,9 +66,7 @@
     <Compile Include="ViewModels\GenderView.cs" />
     <Compile Include="ViewModels\TitleView.cs" />
     <Compile Include="Extensions\Extensions.cs" />
-    <Compile Include="Mocks\VolatiltiyCallbackMock.cs" />
     <Compile Include="Service\VolatilityCallback.cs" />
-    <Compile Include="Service\VolatilityService.cs" />
     <Compile Include="ViewModels\CustomerDetailsView.cs" />
     <Page Include="CustomerDetailsWindow.xaml">
       <SubType>Designer</SubType>

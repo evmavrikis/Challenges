@@ -56,16 +56,15 @@ namespace VolatilityWPFApp
             this.Title = "Volatility";
             this.DataContext = this;
 
-            bool useMocks = false;
+            bool useMockService = false;
             if (App.Args.Length > 0)
             {
-                useMocks = (App.Args[0] == "1");
+                useMockService = (App.Args[0] == "1");
             }
 
-            if (useMocks)
+            _callBack = new VolatilityCallback(UpdateNotifications);
+            if (useMockService)
             {
-                
-                _callBack = new VolatilityWPFApp.Mocks.VolatiltiyCallbackMock(UpdateNotifications);
                 _service = new VolatilityWPFApp.Mocks.VolatilityServiceMock(_callBack); ;
             }
             else
@@ -170,7 +169,17 @@ namespace VolatilityWPFApp
             }
         }
 
-        
+        private void dataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                ExecuteActionForSelectedCustomer(DeleteExistingRecord);
+                _notificationInfo.RecordsDisplayed--;
+                SetNotifictionContent();
+                
+            }
+        }
+
         private void ExecuteActionForSelectedCustomer(Action<Customer> act)
         {
             try
@@ -192,6 +201,8 @@ namespace VolatilityWPFApp
 
 
         }
+
+        
         private void Refresh()
         {
            
@@ -313,6 +324,18 @@ namespace VolatilityWPFApp
         private void DisplayError(Exception ex)
         {
             MessageBox.Show(ex.Message, "Volatility Unexpected Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            try
+            {
+                
+            }
+            catch
+            {
+
+            }
         }
 
         
