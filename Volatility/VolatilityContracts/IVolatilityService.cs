@@ -14,8 +14,8 @@ namespace VolatilityContracts
         IEnumerable<Customer> GetCustomers(RequestFilters filters);
         CustomerDetails GetCustomerDetails(int Id);
         bool DeleteCustomer(int Id);
-        bool UpdateCustomer(Customer customer);
-        bool AddNewCustomer(Customer customer);
+        bool UpdateCustomer(CustomerDetails customerDetails);
+        bool AddNewCustomer(CustomerDetails customerDetails);
 
     }
 }

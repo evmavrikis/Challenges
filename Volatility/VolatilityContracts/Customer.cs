@@ -17,7 +17,7 @@ namespace VolatilityContracts
         public string LastName { get; set; }
 
         [DataMember]
-        public DateTime DOB { get; set; }
+        public DateTime DOB { get; set; } = DateTime.Now;
 
     }
 }

@@ -11,10 +11,10 @@ namespace VolatilityContracts
         public string OtherNames { get; set; }
 
         [DataMember]
-        public Gender Gender { get; set; }
+        public Gender Gender { get; set; } = Gender.Female;
 
         [DataMember]
-        public Title Title { get; set; }
+        public Title Title { get; set; } = Title.Mrs;
 
         [DataMember]
         public string ContactNumber { get; set; }
