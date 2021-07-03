@@ -75,23 +75,50 @@ namespace VolatilityWCFService
         }
         public bool DeleteCustomer(int Id)
         {
-            CustomerDetails v;
-            bool r = SessionManager.CustomerDetailsById.TryRemove(Id, out v);
-            
-            if (r)
+            try
             {
-                SendNotification(Notification.RecordDeleted);
+                Console.WriteLine("{0} session {1} , {2}", DateTime.Now, OperationContext.Current.SessionId, "DeleteCustomer " + Id.ToString());
+                CustomerDetails v;
+                bool r = SessionManager.CustomerDetailsById.TryRemove(Id, out v);
+
+                if (r)
+                {
+                    SendNotification(Notification.RecordDeleted);
+                }
+                return r;
             }
-            return r;
+            catch(Exception ex)
+            {
+                SendNotification(Notification.UnexpectedError);
+                Console.WriteLine("{0} session {1} , {2}", DateTime.Now, OperationContext.Current.SessionId, ex.Message);
+                return false;
+            }
         }
         public bool UpdateCustomer(CustomerDetails customerDetails)
         {
-            return false;
+            try
+            {
+                Console.WriteLine("{0} session {1} , {2}", DateTime.Now, 
+                    OperationContext.Current.SessionId, "DeleteCustomer " + customerDetails.Id.ToString());
+
+                CustomerDetails v;
+                bool r = SessionManager.CustomerDetailsById.TryRemove(customerDetails.Id, out v);
+                r &= SessionManager.CustomerDetailsById.TryAdd(customerDetails.Id, customerDetails);
+                SendNotification(Notification.RecordUpdated);
+                return r;
+            }
+            catch (Exception ex)
+            {
+                SendNotification(Notification.UnexpectedError);
+                Console.WriteLine("{0} session {1} , {2}", DateTime.Now, OperationContext.Current.SessionId, ex.Message);
+                return false;
+            }
         }
         public bool AddNewCustomer(CustomerDetails customerDetails)
         {
             try
             {
+                Console.WriteLine("{0} session {1} , {2}", DateTime.Now, OperationContext.Current.SessionId, "AddNewCustomer");
                 var id = SessionManager.CustomerDetailsById.Values.Max(o => o.Id);
                 customerDetails.Id = id + 1;
                 SessionManager.CustomerDetailsById.TryAdd(customerDetails.Id, customerDetails);
