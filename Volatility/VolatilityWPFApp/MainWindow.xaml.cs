@@ -188,8 +188,8 @@ namespace VolatilityWPFApp
             if (e.Key == Key.Delete)
             {
                 ExecuteActionForSelectedCustomer(DeleteExistingRecord);
-                _notificationInfo.RecordsDisplayed--;
-                SetNotifictionContent();
+                //_notificationInfo.RecordsDisplayed--;
+                //SetNotifictionContent();
                 
             }
         }
@@ -262,6 +262,7 @@ namespace VolatilityWPFApp
             if (_modifiedRecord != null)
             {
                 _service.AddNewCustomer(_modifiedRecord);
+                Refresh();
             }
         }
 
@@ -296,9 +297,10 @@ namespace VolatilityWPFApp
         {
             if ( !_service.DeleteCustomer(customer.Id))
             {
-                MessageBox.Show("Customer could not be deleted. Please refresh.", "Volatility warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Customer could not be deleted.", "Volatility warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
+            Refresh();
         }
 
 
