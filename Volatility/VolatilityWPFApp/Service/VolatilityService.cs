@@ -25,11 +25,11 @@ namespace VolatilityWPFApp
         {
             return true;
         }
-        public bool UpdateCustomer(Customer customer)
+        public bool UpdateCustomer(CustomerDetails customerDetails)
         {
             return true;
         }
-        public bool AddNewCustomer(Customer customer)
+        public bool AddNewCustomer(CustomerDetails customerDetails)
         {
             return false;
         }

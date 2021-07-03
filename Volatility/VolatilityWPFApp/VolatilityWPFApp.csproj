@@ -62,6 +62,7 @@
     <Compile Include="CustomerDetailsWindow.xaml.cs">
       <DependentUpon>CustomerDetailsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NorificationInfo.cs" />
     <Compile Include="ViewModels\GenderView.cs" />
     <Compile Include="ViewModels\TitleView.cs" />
     <Compile Include="Extensions\Extensions.cs" />
@@ -126,8 +127,6 @@
   <ItemGroup>
     <Resource Include="small.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Entities\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

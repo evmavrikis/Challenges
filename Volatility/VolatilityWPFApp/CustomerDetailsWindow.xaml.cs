@@ -21,10 +21,10 @@ namespace VolatilityWPFApp
     /// </summary>
     public partial class CustomerDetailsWindow : Window
     {
-        //public CustomerDetails CustomerInfo { get; set; } = new CustomerDetails();
         public List<TitleView> Titles { get; set; } = new List<TitleView>();
         public CustomerDetailsView CustomerDetailsView { get; set; } = new CustomerDetailsView();
 
+        internal Action<CustomerDetails> SetRecordDel = null;
         public CustomerDetailsWindow()
         {
             InitializeComponent();
@@ -32,5 +32,29 @@ namespace VolatilityWPFApp
             this.DataContext = CustomerDetailsView;
 
         }
+
+        private void btnOk_Click(object sender, RoutedEventArgs e)
+        {
+            SetRecordDel(CustomerDetailsView.CustomerDetails);
+            this.Close();
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void txtContactNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            int v;
+            e.Handled = !int.TryParse(e.Text, out v);
+            
+        }
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            SetRecordDel = null;
+        }
+
+        
     }
 }

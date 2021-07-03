@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VolatilityContracts;
 using System.Configuration;
+using VolatilityWPFApp.Extensions;
 
 namespace VolatilityWPFApp.Mocks
 {
@@ -13,14 +14,15 @@ namespace VolatilityWPFApp.Mocks
     /// </summary>
     internal class VolatilityServiceMock:IVolatilityService
     {
-        
+        // Do not use a dictionary to simulate some delay.
         private List<CustomerDetails> _customers;
-
-        public VolatilityServiceMock()
+        private IVolatilityCallback _callback;
+        public VolatilityServiceMock(IVolatilityCallback callback)
         {
             var fileName = ConfigurationManager.AppSettings["MockData"];
             var json = System.IO.File.ReadAllText(fileName);
             _customers = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CustomerDetails>>(json);
+            _callback = callback;
         }
         public IEnumerable<Customer> GetCustomers()
         {
@@ -42,15 +44,43 @@ namespace VolatilityWPFApp.Mocks
         }
         public bool DeleteCustomer(int Id)
         {
-            return true;
+            var cust = _customers.FirstOrDefault(c => c.Id == Id);
+            if (cust == null)
+            {
+                return false;
+            }
+            else
+            {
+                _customers.Remove(cust);
+                _callback.SendNotification(Notification.RecordDeleted);
+                return true;
+            }
         }
-        public bool UpdateCustomer(Customer customer)
+        public bool UpdateCustomer(CustomerDetails customerDetails)
         {
-            return true;
+            var cust = _customers.FirstOrDefault(c => c.Id == customerDetails.Id);
+            if (cust == null)
+            {
+                return false;
+            }
+            else
+            {
+                _customers.Remove(cust);
+                var newCust = new CustomerDetails();
+                newCust.CopyFrom(customerDetails);
+                _customers.Add(newCust);
+                _callback.SendNotification(Notification.RecordUpdated);
+                return true;
+            }
+            
         }
-        public bool AddNewCustomer(Customer customer)
+        public bool AddNewCustomer(CustomerDetails customerDetails)
         {
-            return false;
+            var maxId = _customers.Max(c => c.Id);
+            customerDetails.Id = maxId + 1;
+            _customers.Add(customerDetails);
+            _callback.SendNotification(Notification.RecordAdded);
+            return true;
         }
     }
 }
