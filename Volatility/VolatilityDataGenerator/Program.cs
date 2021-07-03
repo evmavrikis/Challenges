@@ -61,7 +61,11 @@ namespace VolatilityDataGenerator
                 c.PostalAddressLine1 = c.PostalAddressLine1.Replace("\"", "");
                 if (a.Length > 3)
                 {
-                    c.PostalAddressLine2 = a[2];
+                    for (int j=2; j < a.Length - 1; j++)
+                    {
+                        c.PostalAddressLine2 += a[j];
+                    }
+                    
                     c.PostalAddressLine2 = c.PostalAddressLine2.Replace("\"", ""); ;
                 }
             }
