@@ -34,6 +34,9 @@ namespace VolatilityContracts
     public enum Notification
     {
         [EnumMember]
+        Ping = 1,
+
+        [EnumMember]
         RecordAdded = 10,
 
         [EnumMember]
