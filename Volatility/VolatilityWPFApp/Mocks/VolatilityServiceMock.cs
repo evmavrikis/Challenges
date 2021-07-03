@@ -58,10 +58,7 @@ namespace VolatilityWPFApp.Mocks
             }
         }
 
-        public IEnumerable<Customer> GetCustomers()
-        {
-            return _customers;
-        }
+        
         public IEnumerable<Customer> GetCustomers(RequestFilters filters)
         {
             var fn = filters.FirstName;

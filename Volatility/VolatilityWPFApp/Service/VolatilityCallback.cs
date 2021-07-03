@@ -7,7 +7,7 @@ using VolatilityContracts;
 
 namespace VolatilityWPFApp
 {
-    internal class VolatilityCallback:IVolatilityCallback
+    internal class VolatilityCallback : IVolatilityCallback
     {
 
         private Action<Notification> _internalCallback;
@@ -20,4 +20,5 @@ namespace VolatilityWPFApp
             _internalCallback(notification);
         }
     }
+   
 }

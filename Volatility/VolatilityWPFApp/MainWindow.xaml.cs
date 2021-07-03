@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using VolatilityContracts;
 using System.Collections.ObjectModel;
 using VolatilityWPFApp.Extensions;
+using System.ServiceModel;
 
 namespace VolatilityWPFApp
 {
@@ -46,6 +47,7 @@ namespace VolatilityWPFApp
             }
             catch (Exception ex)
             {
+          
                 DisplayError(ex);
             }
         }
@@ -69,6 +71,18 @@ namespace VolatilityWPFApp
             }
             else
             {
+                // Initialise WCF client.
+                var address = new EndpointAddress("net.pipe://localhost/MyAddress");
+                var binding = new NetNamedPipeBinding()
+                {
+                    MaxBufferSize = 2000000,
+                    MaxReceivedMessageSize = 2000000
+                };
+                
+                var context = new InstanceContext(_callBack);
+                var factory = new DuplexChannelFactory<IVolatilityService>(context, binding, address);
+                _service = factory.CreateChannel();
+               
 
             }
         }
@@ -212,6 +226,8 @@ namespace VolatilityWPFApp
                 LastName = this.txtLastNameFilter.Text
             };
             var customers = _service.GetCustomers(filters);
+
+
             Customers.Clear();
             foreach (var c in customers)
             {

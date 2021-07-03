@@ -10,11 +10,19 @@ namespace VolatilityContracts
     CallbackContract = typeof(IVolatilityCallback))]
     public interface IVolatilityService
     {
-        IEnumerable<Customer> GetCustomers();
+        [OperationContract]
         IEnumerable<Customer> GetCustomers(RequestFilters filters);
+
+        [OperationContract]
         CustomerDetails GetCustomerDetails(int Id);
+
+        [OperationContract]
         bool DeleteCustomer(int Id);
+
+        [OperationContract]
         bool UpdateCustomer(CustomerDetails customerDetails);
+
+        [OperationContract]
         bool AddNewCustomer(CustomerDetails customerDetails);
 
     }
