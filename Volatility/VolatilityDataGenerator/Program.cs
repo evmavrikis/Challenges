@@ -13,7 +13,7 @@ namespace VolatilityDataGenerator
     {
         static void Main(string[] args)
         {
-            Generate(1000, "Customers");
+            Generate(10000, "Customers");
         }
 
         static void Generate(int numOfCustomers, string dataFile)

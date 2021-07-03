@@ -119,3 +119,7 @@ Volatility/VolatilityWCFService/obj/Debug/VolatilityWCFService.pdb
 Volatility/VolatilityDataGenerator/.vs/VolatilityDataGenerator/v16/TestStore/0/000.testlog
 Volatility/VolatilityDataGenerator/.vs/VolatilityDataGenerator/v16/TestStore/0/testlog.manifest
 Volatility/VolatilityWCFService/.vs/VolatilityWCFService/v16/.suo
+Volatility/VolatilityWCFService/bin/Debug/Customers.json
+Volatility/VolatilityWCFService/bin/Debug/Newtonsoft.Json.dll
+Volatility/VolatilityWCFService/bin/Debug/Newtonsoft.Json.xml
+Volatility/VolatilityWCFService/packages/Newtonsoft.Json.13.0.1/.signature.p7s
