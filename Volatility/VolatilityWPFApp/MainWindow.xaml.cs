@@ -86,8 +86,12 @@ namespace VolatilityWPFApp
             }
         }
 
-
-        private bool CheckException(Exception ex)
+        /// <summary>
+        /// Checks the connection and tries to restore it.
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
+        private bool CheckConnection(Exception ex)
         {
             if (ex.HResult == -2146233087)
             {
@@ -241,6 +245,10 @@ namespace VolatilityWPFApp
             }
         }
 
+        /// <summary>
+        /// Generic method for applying action on selected grid row.
+        /// </summary>
+        /// <param name="act"></param>
         private void ExecuteActionForSelectedCustomer(Action<Customer> act)
         {
             try
@@ -263,7 +271,9 @@ namespace VolatilityWPFApp
 
         }
 
-        
+        /// <summary>
+        /// Refreshes the grid.
+        /// </summary>
         private void Refresh()
         {
            
@@ -356,7 +366,12 @@ namespace VolatilityWPFApp
         {
             _modifiedRecord = record;
         }
-        
+
+        /// <summary>
+        /// Updates the notification object upn notification arrival vai the callback.
+        /// Notifications do come in an asynchronous fashion, sow e need to be thread-safe.
+        /// </summary>
+        /// <param name="notification"></param>
         private void UpdateNotifications(Notification notification)
         {
             lock (_monitor)
@@ -381,6 +396,9 @@ namespace VolatilityWPFApp
             SetNotifictionContent();
         }
 
+        /// <summary>
+        /// Updates the UI with notification related info. We are cautious witn non-UI threads accessing the controls.
+        /// </summary>
         private void SetNotifictionContent()
         {
             var act = new Action(() => this.lblNotifications.Content = _notificationInfo.GetDisplayString());
@@ -389,7 +407,7 @@ namespace VolatilityWPFApp
 
         private void DisplayError(Exception ex)
         {
-            if (CheckException(ex))
+            if (CheckConnection(ex))
             {
                 MessageBox.Show("There was a connection loss which is now restored. Please try again.", "Volatility Connection Issue", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }

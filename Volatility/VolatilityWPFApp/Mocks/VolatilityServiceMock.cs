@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VolatilityContracts;
 using System.Configuration;
 using VolatilityWPFApp.Extensions;
 using System.Timers;
-using System.Threading;
-
+using System.Threading.Tasks;
 
 namespace VolatilityWPFApp.Mocks
 {
     /// <summary>
-    /// Mock implementation vor the service.
+    /// Mock implementation vor the service. it can fire notifications to the callback using a different thread.
+    /// It loads the customer records from a data json file.
     /// </summary>
     internal class VolatilityServiceMock:IVolatilityService
     {
@@ -37,6 +35,11 @@ namespace VolatilityWPFApp.Mocks
             _timer.Enabled = true;
         }
 
+        /// <summary>
+        /// Time handler usded to fire semi-random notification via the callback.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             if (_rnd.NextDouble() < 0.35)
@@ -45,13 +48,14 @@ namespace VolatilityWPFApp.Mocks
                 switch (v)
                 {
                     case 0:
-                        ThreadPool.QueueUserWorkItem(SendNotification2, Notification.RecordUpdated);
+                       
+                        Task.Run(()=> _callback.SendNotification(Notification.RecordUpdated));
                         break;
                     case 1:
-                        ThreadPool.QueueUserWorkItem(SendNotification2, Notification.RecordAdded);
+                        Task.Run(() => _callback.SendNotification(Notification.RecordAdded));
                         break;
                     case 2:
-                        ThreadPool.QueueUserWorkItem(SendNotification2, Notification.RecordDeleted);
+                        Task.Run(() => _callback.SendNotification(Notification.RecordDeleted));
                         break;
                 }
 
@@ -87,7 +91,7 @@ namespace VolatilityWPFApp.Mocks
             else
             {
                 _customers.Remove(cust);
-                ThreadPool.QueueUserWorkItem(SendNotification2, Notification.RecordDeleted);
+                Task.Run(() => _callback.SendNotification(Notification.RecordDeleted));
                 return true;
             }
         }
@@ -104,7 +108,7 @@ namespace VolatilityWPFApp.Mocks
                 var newCust = new CustomerDetails();
                 newCust.CopyFrom(customerDetails);
                 _customers.Add(newCust);
-                ThreadPool.QueueUserWorkItem(SendNotification2, Notification.RecordUpdated);
+                Task.Run(() => _callback.SendNotification(Notification.RecordUpdated));
                 return true;
             }
             
@@ -114,14 +118,10 @@ namespace VolatilityWPFApp.Mocks
             var maxId = _customers.Max(c => c.Id);
             customerDetails.Id = maxId + 1;
             _customers.Add(customerDetails);
-            ThreadPool.QueueUserWorkItem(SendNotification2, Notification.RecordAdded);
+            Task.Run(() => _callback.SendNotification(Notification.RecordAdded));
             return true;
         }
 
-        private void SendNotification2(object state)
-        {
-            var n = (Notification)state;
-            _callback.SendNotification(n);
-        }
+        
     }
 }

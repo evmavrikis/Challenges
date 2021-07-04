@@ -70,7 +70,7 @@
     <Compile Include="CustomerDetailsWindow.xaml.cs">
       <DependentUpon>CustomerDetailsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NorificationInfo.cs" />
+    <Compile Include="NotificationInfo.cs" />
     <Compile Include="ViewModels\GenderView.cs" />
     <Compile Include="ViewModels\TitleView.cs" />
     <Compile Include="Extensions\Extensions.cs" />
