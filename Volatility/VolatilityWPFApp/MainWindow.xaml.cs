@@ -16,6 +16,7 @@ using VolatilityContracts;
 using System.Collections.ObjectModel;
 using VolatilityWPFApp.Extensions;
 using System.ServiceModel;
+using System.Configuration;
 
 namespace VolatilityWPFApp
 {
@@ -24,6 +25,9 @@ namespace VolatilityWPFApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const int MaxBufferSize = 2000000;
+        private const int MaxReceivedMessageSize = 2000000;
+
         private IVolatilityService _service;
         private IVolatilityCallback _callBack;
         private InstanceContext _context;
@@ -74,11 +78,11 @@ namespace VolatilityWPFApp
             else
             {
                 // Initialise WCF client.
-                var address = new EndpointAddress("net.pipe://localhost/MyAddress");
+                var address = new EndpointAddress(ConfigurationManager.AppSettings["ServiceEndPoint"]);
                 var binding = new NetNamedPipeBinding()
                 {
-                    MaxBufferSize = 2000000,
-                    MaxReceivedMessageSize = 2000000
+                    MaxBufferSize = MainWindow.MaxBufferSize,
+                    MaxReceivedMessageSize = MainWindow.MaxReceivedMessageSize
                 };
                 
                 _context = new InstanceContext(_callBack);
