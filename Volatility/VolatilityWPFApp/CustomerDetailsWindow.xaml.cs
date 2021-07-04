@@ -28,6 +28,8 @@ namespace VolatilityWPFApp
         public CustomerDetailsWindow()
         {
             InitializeComponent();
+            WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            Owner = Application.Current.MainWindow;
             this.Title = "Customer Details";
             this.DataContext = CustomerDetailsView;
 
