@@ -1,0 +1,18 @@
+- The project is called Volatility. It has four main components (client, server, contracts, test)  and a supportive data generation tool.
+- The server consists of  a WCF service  hosted in a simple console application. It is uses named pipes. The uri and end point can be configured in the application config file.
+- Server  reads the customer records from the Customers.json file and caches them in memory. There is a configurable timer for updating the physical file.
+- The WCF  interface allows for CRUD operations. It can return a  list for customers (limited fields), details for a single customer and also provides update/delete.
+- The WCF service facilitates callbacks in order to subscribe clients for notification events. There is a basic session manager responsible for broadcasting and session clean-up.
+- The server console application launches a console window which remains open and displays logging. No loop in the Main. If the console closes the server dies.
+- Only a single instance of the server can be launched.
+- The WPF client has a main window with a grid and a second window for the customer details (new and edit).
+- There is a menu for all four actions plus exit. All four actions (New, Edit, Delete, Refresh) have short keys as well (Ctrl + first letter of  the menu item header).
+- There is also a Refresh button above the grid. The Delete button also works on the grid. There is no warning before the delete, I should  probably add one.
+- The gird is configured to allow a single row selection, so all operations are performed on the selected customer record.
+- There are also filters for the first and last names above the grid.
+- The grid will refresh after the RUD operations.
+- The client receives notifications from the server with regards failures and data changes by other clients. Errors as well.
+- There is a status label at the bottom with a tool-tip explaining the content. It displays the number of grid rows as well as data changes by other clients since last refresh and number of errors.
+- The WPF client has a mock implementation for the WCF service. For this reason code is thread safe, although I do not believe this is required for the WCF implementation (see comments in the code, we can also discuss it)
+- Unfortunately I have not been able to cover the service with many tests as I did for the Sacha challenge. I have only created one with 500 clients firing lots of semi-random requests. Will try to add a few more if I time permits it.
+- There is a Run folder with all the binaries ready for execution. It also contains a brief file with instructions.
