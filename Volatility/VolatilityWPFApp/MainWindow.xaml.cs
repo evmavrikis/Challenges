@@ -29,7 +29,6 @@ namespace VolatilityWPFApp
         private const int MaxReceivedMessageSize = 2000000;
 
         private IVolatilityService _service;
-        private IVolatilityCallback _callBack;
         private InstanceContext _context;
 
         private NotificationInfo _notificationInfo = new NotificationInfo();
@@ -74,10 +73,10 @@ namespace VolatilityWPFApp
                 useMockService = (App.Args[0] == "1");
             }
 
-            _callBack = this; // new VolatilityCallback(UpdateNotifications);
+            
             if (useMockService)
             {
-                _service = new VolatilityWPFApp.Mocks.VolatilityServiceMock(_callBack); 
+                _service = new VolatilityWPFApp.Mocks.VolatilityServiceMock(this); 
             }
             else
             {
@@ -123,7 +122,7 @@ namespace VolatilityWPFApp
                     MaxReceivedMessageSize = MainWindow.MaxReceivedMessageSize
                 };
 
-                _context = new InstanceContext(_callBack);
+                _context = new InstanceContext(this);
 
                 var factory = new DuplexChannelFactory<IVolatilityService>(_context, binding, address);
                 _service = factory.CreateChannel();

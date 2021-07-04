@@ -149,9 +149,7 @@ namespace VolatilityWCFService
 
         private void SendNotification(Notification n)
         {
-            object[] args = new object[] { _callBack, n };
-            ThreadPool.QueueUserWorkItem(SessionManager.SendNotification, args);
-            
+            Task.Run(() => SessionManager.SendNotification(_callBack, n));
         }
     }
 }

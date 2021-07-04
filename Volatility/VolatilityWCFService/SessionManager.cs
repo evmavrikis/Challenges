@@ -52,12 +52,10 @@ namespace VolatilityWCFService
             _sessionsById.TryAdd(context.SessionId, context);
         }
 
-        internal static void SendNotification(object state)
+        
+        internal static void SendNotification(IVolatilityCallback callback, Notification n)
         {
-            object[] ar = state as object[];
-            var callback = (IVolatilityCallback)ar[0];
-            var n = (Notification)ar[1];
-
+           
             // We broadcast to one or more clients depending on the norification type.
             // If we detect that the session is lost we remove it from the dictionary.
             // Must be careful with multithreading and when looping through the gloabal collection.
@@ -65,14 +63,14 @@ namespace VolatilityWCFService
             List<OperationContext> sessions = new List<OperationContext>();
 
             // Lock to loop and createa local copy.
-            lock(_monitor)
+            lock (_monitor)
             {
                 sessions = _sessionsById.Values.ToList();
             }
 
             foreach (var ss in sessions)
             {
-               // Remove sessions thet have terminated or faulted gracefully.
+                // Remove sessions thet have terminated or faulted gracefully.
                 if (ss.InstanceContext.State == CommunicationState.Closed || ss.InstanceContext.State == CommunicationState.Faulted)
                 {
                     sessionsToRemove.Add(ss.SessionId);
@@ -86,7 +84,7 @@ namespace VolatilityWCFService
                         if (cb == callback)
                         {
                             // Notify only the caller for its errors.
-                            if (!TrySendNotification(cb,n))
+                            if (!TrySendNotification(cb, n))
                             {
                                 sessionsToRemove.Add(ss.SessionId);
                             }
@@ -105,11 +103,11 @@ namespace VolatilityWCFService
                         break;
                 }
             }
-            
+
             // Lock to remove lost sessions.
             if (sessionsToRemove.Count > 0)
             {
-                lock(_monitor)
+                lock (_monitor)
                 {
                     foreach (var id in sessionsToRemove)
                     {
@@ -119,7 +117,6 @@ namespace VolatilityWCFService
                 }
             }
         }
-
         // If there the session is lost then remove it from the sessions.
         private static bool TrySendNotification(IVolatilityCallback callback,Notification n)
         {
