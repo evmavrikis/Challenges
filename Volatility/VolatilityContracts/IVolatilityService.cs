@@ -25,5 +25,8 @@ namespace VolatilityContracts
         [OperationContract]
         bool AddNewCustomer(CustomerDetails customerDetails);
 
+        [OperationContract]
+        bool Ping();
+
     }
 }

@@ -22,23 +22,36 @@ namespace VolatilityWCFService
             Console.WriteLine("{0} New session {1}",DateTime.Now ,OperationContext.Current.SessionId);
         }
         
-        
+        public bool Ping()
+        {
+            return true;
+        }
         public IEnumerable<Customer> GetCustomers(RequestFilters filters)
         {
             try
             {
                 Console.WriteLine("{0} session {1} , {2}", DateTime.Now, OperationContext.Current.SessionId, "GetCustomers");
 
-                var fn = filters.FirstName;
-                var ln = filters.LastName;
+                var fnFilter = filters.FirstName;
+                var lnFilter = filters.LastName;
                 var ret = new List<Customer>();
 
                 // Copy the values. Better be safe than sorry.
                 var vals = SessionManager.CustomerDetailsById.Values.ToList();
+
+                
                 foreach (var c in vals)
                 {
-                    var hit = (fn == "" || String.Compare(c.FirstName.Substring(0, fn.Length), fn, true) == 0 &&
-                    (ln == "" || String.Compare(c.LastName.Substring(0, ln.Length), ln, true) == 0));
+                    int fnLength = (c.FirstName == null ? 0 : c.FirstName.Length);
+                    int lnLength = (c.LastName == null ? 0 : c.LastName.Length);
+
+                    if (fnFilter.Length > fnLength || lnFilter.Length > lnLength)
+                    {
+                        continue;
+                    }
+                    
+                    var hit = (fnFilter == "" || String.Compare(c.FirstName.Substring(0, fnFilter.Length), fnFilter, true) == 0 &&
+                    (lnFilter == "" || String.Compare(c.LastName.Substring(0, lnFilter.Length), lnFilter, true) == 0));
 
                     if (hit)
                     {
@@ -50,7 +63,7 @@ namespace VolatilityWCFService
             }
             catch(Exception ex)
             {
-                Console.WriteLine("{0} session {1} , {2}", DateTime.Now, OperationContext.Current.SessionId, ex.Message);
+                Console.WriteLine("{0} session {1} , {2}", DateTime.Now, OperationContext.Current.SessionId, "ERROR" + ex.Message);
                 SendNotification(Notification.UnexpectedError);
                 return new List<Customer>() ;
             }
@@ -68,7 +81,7 @@ namespace VolatilityWCFService
             }
             catch(Exception ex)
             {
-                Console.WriteLine("{0} session {1} , {2}", DateTime.Now, OperationContext.Current.SessionId, ex.Message);
+                Console.WriteLine("{0} session {1} , {2}", DateTime.Now, OperationContext.Current.SessionId, "ERROR: " + ex.Message);
                 SendNotification(Notification.UnexpectedError);
                 return null;
             }
@@ -90,7 +103,7 @@ namespace VolatilityWCFService
             catch(Exception ex)
             {
                 SendNotification(Notification.UnexpectedError);
-                Console.WriteLine("{0} session {1} , {2}", DateTime.Now, OperationContext.Current.SessionId, ex.Message);
+                Console.WriteLine("{0} session {1} , {2}", DateTime.Now, OperationContext.Current.SessionId, "ERROR: "+ ex.Message);
                 return false;
             }
         }
@@ -110,7 +123,7 @@ namespace VolatilityWCFService
             catch (Exception ex)
             {
                 SendNotification(Notification.UnexpectedError);
-                Console.WriteLine("{0} session {1} , {2}", DateTime.Now, OperationContext.Current.SessionId, ex.Message);
+                Console.WriteLine("{0} session {1} , {2}", DateTime.Now, OperationContext.Current.SessionId, "ERROR: " + ex.Message);
                 return false;
             }
         }
@@ -127,7 +140,7 @@ namespace VolatilityWCFService
             }
             catch (Exception ex)
             {
-                Console.WriteLine("{0} session {1} , {2}", DateTime.Now, OperationContext.Current.SessionId, ex.Message);
+                Console.WriteLine("{0} session {1} , {2}", DateTime.Now, OperationContext.Current.SessionId, "ERROR: " + ex.Message);
                 SendNotification(Notification.UnexpectedError);
                 return false;
             }
