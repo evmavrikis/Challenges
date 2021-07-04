@@ -71,7 +71,6 @@
     <Compile Include="ViewModels\GenderView.cs" />
     <Compile Include="ViewModels\TitleView.cs" />
     <Compile Include="Extensions\Extensions.cs" />
-    <Compile Include="Service\VolatilityCallback.cs" />
     <Compile Include="ViewModels\CustomerDetailsView.cs" />
     <Page Include="CustomerDetailsWindow.xaml">
       <SubType>Designer</SubType>
@@ -124,6 +123,8 @@
   <ItemGroup>
     <Resource Include="small.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Service\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

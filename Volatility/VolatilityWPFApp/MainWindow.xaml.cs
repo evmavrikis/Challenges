@@ -23,7 +23,7 @@ namespace VolatilityWPFApp
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IVolatilityCallback
     {
         private const int MaxBufferSize = 2000000;
         private const int MaxReceivedMessageSize = 2000000;
@@ -45,6 +45,10 @@ namespace VolatilityWPFApp
             CompleteInitialise();
         }
 
+        public void SendNotification(Notification notification)
+        {
+            UpdateNotifications(notification);
+        }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -70,30 +74,66 @@ namespace VolatilityWPFApp
                 useMockService = (App.Args[0] == "1");
             }
 
-            _callBack = new VolatilityCallback(UpdateNotifications);
+            _callBack = this; // new VolatilityCallback(UpdateNotifications);
             if (useMockService)
             {
-                _service = new VolatilityWPFApp.Mocks.VolatilityServiceMock(_callBack); ;
+                _service = new VolatilityWPFApp.Mocks.VolatilityServiceMock(_callBack); 
             }
             else
             {
                 // Initialise WCF client.
+                InitConnection();
+               
+            }
+        }
+
+
+        private bool CheckException(Exception ex)
+        {
+            if (ex.HResult == -2146233087)
+            {
+                return InitConnection();
+            }
+
+            return false;
+        }
+        private bool InitConnection()
+        {
+            var dt = DateTime.Now;
+            bool success = false;
+            int secs;
+            var v = ConfigurationManager.AppSettings["ConnectThresholdSeconds"];
+            int.TryParse(v, out secs);
+            secs = Math.Max(secs, 1);
+            while(!success && (DateTime.Now - dt).TotalSeconds < secs)
+            {
+                success = TryInitConnection();
+            }
+
+            return success;
+        }
+        private bool TryInitConnection()
+        {
+            try
+            {
                 var address = new EndpointAddress(ConfigurationManager.AppSettings["ServiceEndPoint"]);
                 var binding = new NetNamedPipeBinding()
                 {
                     MaxBufferSize = MainWindow.MaxBufferSize,
                     MaxReceivedMessageSize = MainWindow.MaxReceivedMessageSize
                 };
-                
+
                 _context = new InstanceContext(_callBack);
-                
+
                 var factory = new DuplexChannelFactory<IVolatilityService>(_context, binding, address);
                 _service = factory.CreateChannel();
-               
-
+                return _service.Ping();
+            }
+            catch
+            {
+                return false;
             }
         }
-
         private void menuItemExit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -107,6 +147,7 @@ namespace VolatilityWPFApp
             catch (Exception ex)
             {
                 DisplayError(ex);
+                
             }
         }
 
@@ -348,7 +389,14 @@ namespace VolatilityWPFApp
 
         private void DisplayError(Exception ex)
         {
-            MessageBox.Show(ex.Message, "Volatility Unexpected Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            if (CheckException(ex))
+            {
+                MessageBox.Show("There was a connection loss which is now restored. Please try again.", "Volatility Connection Issue", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            else
+            {
+                MessageBox.Show(ex.Message, "Volatility Unexpected Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Window_Closed(object sender, EventArgs e)

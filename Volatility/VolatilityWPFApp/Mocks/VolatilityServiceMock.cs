@@ -58,6 +58,10 @@ namespace VolatilityWPFApp.Mocks
             }
         }
 
+        public bool Ping()
+        {
+            return true;
+        }
         
         public IEnumerable<Customer> GetCustomers(RequestFilters filters)
         {
