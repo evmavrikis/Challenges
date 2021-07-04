@@ -40,6 +40,11 @@
             </DataGrid.Resources>
         </DataGrid>
         <Label x:Name="lblNotifications" Content="" Margin="100,5,5,5" Grid.Row="2" BorderThickness="1" BorderBrush="Black">
+            <Label.ToolTip>
+                <ToolTip>
+                    <Label Content="The number of records being displayed and server data changes since latest refresh"></Label>
+                </ToolTip>
+            </Label.ToolTip>
             <Label.Background>
                 <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlLightLightColorKey}}"/>
             </Label.Background>
@@ -61,6 +66,12 @@
                 </MenuItem>
             </Menu>
         </DockPanel>
-        <Label x:Name="label2" Content="Notifications:" Margin="10,5,572,10" Grid.Row="2" Height="23" RenderTransformOrigin="0.333,0.348"/>
+        <Label x:Name="label2" Content="Record stats:" Margin="10,5,572,10" Grid.Row="2" Height="23" RenderTransformOrigin="0.333,0.348">
+            <Label.ToolTip>
+                <ToolTip>
+                    <Label Content="The number of records being displayed and server data changes since lastest refresh"></Label></ToolTip>
+            </Label.ToolTip>
+        </Label>
+               
     </Grid>
 </Window>

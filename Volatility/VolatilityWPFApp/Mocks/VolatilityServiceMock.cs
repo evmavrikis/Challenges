@@ -34,7 +34,7 @@ namespace VolatilityWPFApp.Mocks
             _timer = new System.Timers.Timer(2000);
             _timer.Elapsed += OnTimedEvent;
             _timer.AutoReset = true;
-            _timer.Enabled = false;
+            _timer.Enabled = true;
         }
 
         private void OnTimedEvent(Object source, ElapsedEventArgs e)

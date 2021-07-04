@@ -26,6 +26,8 @@ namespace VolatilityWPFApp
     {
         private IVolatilityService _service;
         private IVolatilityCallback _callBack;
+        private InstanceContext _context;
+
         private NotificationInfo _notificationInfo = new NotificationInfo();
         private readonly object _monitor = new object();
 
@@ -79,8 +81,9 @@ namespace VolatilityWPFApp
                     MaxReceivedMessageSize = 2000000
                 };
                 
-                var context = new InstanceContext(_callBack);
-                var factory = new DuplexChannelFactory<IVolatilityService>(context, binding, address);
+                _context = new InstanceContext(_callBack);
+                
+                var factory = new DuplexChannelFactory<IVolatilityService>(_context, binding, address);
                 _service = factory.CreateChannel();
                
 
@@ -348,7 +351,7 @@ namespace VolatilityWPFApp
         {
             try
             {
-                
+                _context.Close();
             }
             catch
             {

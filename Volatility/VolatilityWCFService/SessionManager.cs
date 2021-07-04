@@ -8,6 +8,7 @@ using System.Collections.Concurrent;
 using VolatilityContracts;
 using Newtonsoft.Json;
 using System.Configuration;
+using System.Timers;
 
 namespace VolatilityWCFService
 {
@@ -19,16 +20,30 @@ namespace VolatilityWCFService
 
         private static ConcurrentDictionary<string, OperationContext> _sessionsById = new ConcurrentDictionary<string, OperationContext>();
         private static ConcurrentDictionary<int, CustomerDetails> _customerDetailsById = new ConcurrentDictionary<int, CustomerDetails>();
+        private static System.Timers.Timer _timer = new System.Timers.Timer();
+        private static bool _dataFileBusy = false;
+
         static void Main(string[] args)
         {
             LoadCustomerRecords();
-            var host = new ServiceHost(typeof(VolatilityService), new Uri[] { new Uri("net.pipe://localhost") });
-            host.AddServiceEndpoint(typeof(IVolatilityService), new NetNamedPipeBinding(), "MyAddress");
+
+            // Setup timer for persisting the customer changes in the json file.
+            int secs;
+            if (int.TryParse(ConfigurationManager.AppSettings["SaveDataIntervalSeconds"], out secs))
+            {
+                _timer = new System.Timers.Timer(secs*1000);
+                _timer.Elapsed += SaveCustomers;
+                _timer.AutoReset = true;
+                _timer.Enabled = true;
+            }
+
+            // Setup and start the service:
+            var host = new ServiceHost(typeof(VolatilityService), new Uri[] { new Uri(ConfigurationManager.AppSettings["BaseUri"]) });
+            host.AddServiceEndpoint(typeof(IVolatilityService), new NetNamedPipeBinding(), ConfigurationManager.AppSettings["EndPoint"]);
             
             host.Open();
 
-            Console.WriteLine("Service is available. " +
-        "Press <ENTER> to exit.");
+            Console.WriteLine("Volatility Service is now running. " +"Press <ENTER> to exit.");
             Console.ReadLine();
         }
 
@@ -57,6 +72,13 @@ namespace VolatilityWCFService
 
             foreach (var ss in sessions)
             {
+               // Remove sessions thet have terminated or faulted gracefully.
+                if (ss.InstanceContext.State == CommunicationState.Closed || ss.InstanceContext.State == CommunicationState.Faulted)
+                {
+                    sessionsToRemove.Add(ss.SessionId);
+                    continue;
+                }
+
                 var cb = ss.GetCallbackChannel<IVolatilityCallback>();
                 switch (n)
                 {
@@ -114,10 +136,14 @@ namespace VolatilityWCFService
         }
         internal static void LoadCustomerRecords()
         {
+            _dataFileBusy = true;
+
             var fileName = ConfigurationManager.AppSettings["DataFile"];
             var json = System.IO.File.ReadAllText(fileName);
             var records = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CustomerDetails>>(json);
             records.ForEach(r => _customerDetailsById.TryAdd(r.Id, r));
+
+            _dataFileBusy = false;
         }
 
         internal static ConcurrentDictionary<int, CustomerDetails> CustomerDetailsById
@@ -126,6 +152,35 @@ namespace VolatilityWCFService
             {
                 return _customerDetailsById;
             }
+        }
+
+        private static void SaveCustomers(Object source, ElapsedEventArgs e)
+        {
+            if (_dataFileBusy)
+            {
+                return;
+            }
+
+            try
+            {
+                var fileName = ConfigurationManager.AppSettings["DataFile"];
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(_customerDetailsById.Values);
+                System.IO.File.WriteAllText(fileName, json);
+            }
+            catch
+            {
+                List<OperationContext> sessions;
+                lock (_monitor)
+                {
+                    sessions = _sessionsById.Values.ToList();
+                }
+                foreach (var s in sessions)
+                {
+                    var cb = s.GetCallbackChannel<IVolatilityCallback>();
+                    TrySendNotification(cb, Notification.UnexpectedError);
+                }
+            }
+            
         }
     }
 }
