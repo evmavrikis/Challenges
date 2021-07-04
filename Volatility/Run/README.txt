@@ -1,0 +1,2 @@
+- Please run the VolatilityWCFService.exe first. We can not successfully launch a second instance.
+- Then launch as many instances of VolatilityWPFApp.exe you wish.
