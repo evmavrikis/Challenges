@@ -336,6 +336,7 @@ namespace VolatilityWPFApp
             if (_modifiedRecord != null)
             {
                 _service.UpdateCustomer(_modifiedRecord);
+                Refresh();
             }
 
         }

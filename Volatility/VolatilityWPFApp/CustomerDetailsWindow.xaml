@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VolatilityWPFApp"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
         Title="CustomerDetailsWindow" Height="386.349" Width="553.837" ResizeMode="NoResize" Icon="small.png" Closed="Window_Closed">
 
     <Grid Margin="1,1,1,1">

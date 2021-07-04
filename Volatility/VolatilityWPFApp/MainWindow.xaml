@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VolatilityWPFApp"
         mc:Ignorable="d"
-        
+        WindowStartupLocation="CenterScreen"
         Title="MainWindow" Height="497" Width="680" Icon="08-saturn_98601.png" Loaded="Window_Loaded" Closed="Window_Closed">
     <Window.CommandBindings>
         <CommandBinding Command="New" Executed="NewCommandBinding_Executed"/>
