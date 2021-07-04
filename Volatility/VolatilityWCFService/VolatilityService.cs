@@ -49,9 +49,9 @@ namespace VolatilityWCFService
                     {
                         continue;
                     }
-                    
-                    var hit = (fnFilter == "" || String.Compare(c.FirstName.Substring(0, fnFilter.Length), fnFilter, true) == 0 &&
-                    (lnFilter == "" || String.Compare(c.LastName.Substring(0, lnFilter.Length), lnFilter, true) == 0));
+
+                    var hit = (fnFilter == "" || String.Compare(c.FirstName.Substring(0, fnFilter.Length), fnFilter, true) == 0);
+                    hit &=  (lnFilter == "" || String.Compare(c.LastName.Substring(0, lnFilter.Length), lnFilter, true) == 0);
 
                     if (hit)
                     {
