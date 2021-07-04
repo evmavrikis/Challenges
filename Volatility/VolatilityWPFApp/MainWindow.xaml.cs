@@ -62,7 +62,7 @@ namespace VolatilityWPFApp
         }
         private void CompleteInitialise()
         {
-            this.MinWidth = 500;
+            this.MinWidth = 600;
             this.MinHeight = 500;
             this.Title = "Volatility";
             this.DataContext = this;
