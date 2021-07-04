@@ -41,7 +41,7 @@ namespace VolatilityWCFServiceTests
         public void MainTest()
         {
             int nClients = 500;
-            int callsPerTenMilisecond = 10;
+            int callsPerTenMilisecond = 20;
             int testDurectionSeconds = 5;
 
             int tot = 0;

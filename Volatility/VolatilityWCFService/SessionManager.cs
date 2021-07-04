@@ -12,7 +12,10 @@ using System.Timers;
 
 namespace VolatilityWCFService
 {
-    
+    /// <summary>
+    /// Simple session/context manager for the WCF clients.
+    /// It caches all the customer records and it updates the physical file using a timer.
+    /// </summary>
     class SessionManager
     {
         // Concurrent dictionaries are not enitrely safe. They cannot protect us when we loop through a collection that is being modified.

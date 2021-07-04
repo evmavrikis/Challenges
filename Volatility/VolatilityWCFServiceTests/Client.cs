@@ -11,11 +11,13 @@ namespace VolatilityWCFServiceTests
 {
     public class Client:IVolatilityCallback
     {
-        private readonly object _monitor = new object();
-        
+       
         internal IVolatilityService Service;
         internal  InstanceContext Context;
         internal ConcurrentDictionary<Notification, long> Notifications = new ConcurrentDictionary<Notification, long>();
+
+        // This is a test for thread-safety.
+        internal Dictionary<Notification, long> Notifications2 = new Dictionary<Notification, long>();
 
         public Client()
         {
@@ -23,6 +25,7 @@ namespace VolatilityWCFServiceTests
             foreach (var v in vals)
             {
                 Notifications.TryAdd(v, 0);
+                Notifications2.Add(v, 0);
             }
 
         }
@@ -45,10 +48,9 @@ namespace VolatilityWCFServiceTests
 
         public void SendNotification(Notification notification)
         {
-            lock (_monitor)
-            {
+            
                 Notifications[notification]++;
-            }
+                Notifications2[notification]++;      
         }
 
         public void TryClose()

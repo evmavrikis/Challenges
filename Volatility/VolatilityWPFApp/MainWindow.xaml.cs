@@ -21,7 +21,9 @@ using System.Configuration;
 namespace VolatilityWPFApp
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml.
+    /// It implements the WCF callback interface.
+    /// Please see comments for thread safety on the callback.
     /// </summary>
     public partial class MainWindow : Window, IVolatilityCallback
     {
@@ -32,6 +34,10 @@ namespace VolatilityWPFApp
         private InstanceContext _context;
 
         private NotificationInfo _notificationInfo = new NotificationInfo();
+
+        // This was introduced for the mock service implementation which lives within the same process.
+        // I believe it is not necessary for the actual WCF implementation of the service, but I am not entirely sure.
+        // The stress tests appear to confirm this view.
         private readonly object _monitor = new object();
 
       
@@ -368,8 +374,7 @@ namespace VolatilityWPFApp
         }
 
         /// <summary>
-        /// Updates the notification object upn notification arrival vai the callback.
-        /// Notifications do come in an asynchronous fashion, sow e need to be thread-safe.
+        /// Updates the notification object upon notification arrival via the callback.
         /// </summary>
         /// <param name="notification"></param>
         private void UpdateNotifications(Notification notification)

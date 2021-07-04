@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.ServiceModel;
 using VolatilityContracts;
 using VolatilityWCFService.Extensions;
-using System.Threading;
-
 
 namespace VolatilityWCFService
 {
+    /// <summary>
+    /// WCF service implementation for the  IVolatilityService
+    /// Callback notifications are called using background threads so contorl is returned to the client quickly.
+    /// </summary>
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
     public class VolatilityService : IVolatilityService
     {
@@ -147,6 +148,10 @@ namespace VolatilityWCFService
             
         }
 
+        /// <summary>
+        /// Use backround thread to release early.
+        /// </summary>
+        /// <param name="n"></param>
         private void SendNotification(Notification n)
         {
             Task.Run(() => SessionManager.SendNotification(_callBack, n));
