@@ -6,9 +6,9 @@ namespace VolatilityContracts
     [DataContract]
     public class CustomerDetails:Customer
     {
-        
+
         [DataMember]
-        public string OtherNames { get; set; }
+        public string OtherNames { get; set; } = "";
 
         [DataMember]
         public Gender Gender { get; set; } = Gender.Female;
@@ -17,19 +17,19 @@ namespace VolatilityContracts
         public Title Title { get; set; } = Title.Mrs;
 
         [DataMember]
-        public string ContactNumber { get; set; }
+        public string ContactNumber { get; set; } = "";
 
         [DataMember]
-        public string EmailAddress { get; set; }
+        public string EmailAddress { get; set; } = "";
 
         [DataMember]
-        public string PostalAddressLine1 { get; set; }
+        public string PostalAddressLine1 { get; set; } = "";
 
         [DataMember]
-        public string PostalAddressLine2 { get; set; }
+        public string PostalAddressLine2 { get; set; } = "";
 
         [DataMember]
-        public string PostCode { get; set; }
+        public string PostCode { get; set; } = "";
 
     }
 }
