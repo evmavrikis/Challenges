@@ -9,6 +9,7 @@
 - There is a menu for all CRUD actions plus exit. All actions (New, Edit, Delete, Refresh) have short keys support (Ctrl + first letter of  the menu item header).
 - There is an additional Refresh button above the grid. The Delete key also works on the grid and has been integrated to the application functionality. There is no warning before the delete, I should  probably add one.
 - The data gird is set to  single row selection, so all operations are performed on the selected customer record.
+- Double clicking on a grid row opens the record details.
 - There are also filters for the first and last names above the grid.
 - All three CUD operations trigger a grid refresh.
 - The client receives notifications from the server about failures and data changes made by other clients. 
