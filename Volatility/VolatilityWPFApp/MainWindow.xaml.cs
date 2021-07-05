@@ -34,7 +34,7 @@ namespace VolatilityWPFApp
         private InstanceContext _context;
 
         private NotificationInfo _notificationInfo = new NotificationInfo();
-
+        private bool _firstConnectionFailed = false;
         // This was introduced for the mock service implementation which lives within the same process.
         // I believe it is not necessary for the actual WCF implementation of the service, but I am not entirely sure.
         // The stress tests appear to confirm this view.
@@ -58,7 +58,15 @@ namespace VolatilityWPFApp
         {
             try
             {
-                Refresh();
+                if (!_firstConnectionFailed)
+                {
+                    Refresh();
+                }
+                else
+                {
+                    MessageBox.Show("Connection with server could not be established!", "Volatility Error", 
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             catch (Exception ex)
             {
@@ -87,7 +95,8 @@ namespace VolatilityWPFApp
             else
             {
                 // Initialise WCF client.
-                InitConnection();
+                _firstConnectionFailed =  !InitConnection();
+                
                
             }
         }
@@ -359,6 +368,14 @@ namespace VolatilityWPFApp
 
         private void DeleteExistingRecord(Customer customer)
         {
+            var r =  MessageBox.Show(string.Format("Are you sure you wish to delete custmer {0} {1}?", customer.FirstName, customer.LastName), 
+                "Volatitlity Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (r == MessageBoxResult.No)
+            {
+                return;
+            }
+            
             if ( !_service.DeleteCustomer(customer.Id))
             {
                 MessageBox.Show("Customer could not be deleted.", "Volatility warning", MessageBoxButton.OK, MessageBoxImage.Warning);
