@@ -32,15 +32,48 @@
                    Width="74" RenderTransformOrigin="-1.121,-1.352" Height="26" HorizontalContentAlignment="Right"/>
             <Label x:Name="lblOtherNames" Content="Other Names:" HorizontalAlignment="Left" Margin="42,123,0,0" VerticalAlignment="Top" Width="85" 
                    RenderTransformOrigin="-1.121,-1.352" Height="26" HorizontalContentAlignment="Right"/>
-            <TextBox x:Name="txtFirstName" HorizontalAlignment="Left" Height="26" Margin="137,50,0,0" TextWrapping="Wrap" Text="{Binding CustomerDetails.FirstName}" VerticalAlignment="Top" Width="227" RenderTransformOrigin="-0.248,-0.657"/>
-            <TextBox x:Name="txtLastName" HorizontalAlignment="Left" Height="26" Margin="137,85,0,0" TextWrapping="Wrap" Text="{Binding CustomerDetails.LastName}" VerticalAlignment="Top" Width="227" RenderTransformOrigin="-0.248,-0.657"/>
+            <TextBox x:Name="txtFirstName" HorizontalAlignment="Left" Height="26" Margin="137,50,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="227" RenderTransformOrigin="-0.248,-0.657">
+                <TextBox.Text>
+                    <Binding Path="CustomerDetails.FirstName" Mode="TwoWay"
+                             ValidatesOnNotifyDataErrors="True"
+                             ValidatesOnDataErrors="True"
+                             NotifyOnValidationError="True">
+                        <Binding.ValidationRules>
+                            <local:NonEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBox x:Name="txtLastName" HorizontalAlignment="Left" Height="26" Margin="137,85,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="227" RenderTransformOrigin="-0.248,-0.657">
+                <TextBox.Text>
+                    <Binding Path="CustomerDetails.LastName" Mode="TwoWay"
+                             ValidatesOnNotifyDataErrors="True"
+                             ValidatesOnDataErrors="True"
+                             NotifyOnValidationError="True">
+                        <Binding.ValidationRules>
+                            <local:NonEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
             <TextBox x:Name="txtOtherNames" HorizontalAlignment="Left" Height="26" Margin="137,125,0,0" TextWrapping="Wrap" Text="{Binding CustomerDetails.OtherNames}" VerticalAlignment="Top" Width="379" RenderTransformOrigin="-0.248,-0.657"/>
             <DatePicker x:Name="dtDOB"  SelectedDate="{Binding Path=CustomerDetails.DOB}" HorizontalAlignment="Left" Height="26"
                         Margin="421,50,0,0" VerticalAlignment="Top" Width="96"/>
             <Label x:Name="label_Copy" Content="DOB:" HorizontalAlignment="Left" Margin="379,50,0,0" VerticalAlignment="Top" Width="37" RenderTransformOrigin="-1.121,-1.352" Height="26"/>
             <Label x:Name="lblContactNumber1" Content="Contact Number:" HorizontalAlignment="Left" Margin="25,156,0,0" VerticalAlignment="Top" 
                    Width="102" RenderTransformOrigin="-1.121,-1.352" Height="26" HorizontalContentAlignment="Right"/>
-            <TextBox x:Name="txtContactNumber" HorizontalAlignment="Left" Height="26" Margin="137,160,0,0" TextWrapping="Wrap" Text="{Binding CustomerDetails.ContactNumber}" VerticalAlignment="Top" Width="96" RenderTransformOrigin="-0.248,-0.657" PreviewTextInput="txtContactNumber_PreviewTextInput" />
+            <TextBox x:Name="txtContactNumber" HorizontalAlignment="Left" Height="26" Margin="137,160,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="96" RenderTransformOrigin="-0.248,-0.657" PreviewTextInput="txtContactNumber_PreviewTextInput">
+                <TextBox.Text>
+                    <Binding Path="CustomerDetails.ContactNumber" Mode="TwoWay"
+                             ValidatesOnNotifyDataErrors="True"
+                             ValidatesOnDataErrors="True"
+                             NotifyOnValidationError="True">
+                        <Binding.ValidationRules>
+                            <local:NonEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox> 
             <Label x:Name="lblContactNumber" Content="Email:" HorizontalAlignment="Left" Margin="247,160,0,0" VerticalAlignment="Top" 
                 Width="51" RenderTransformOrigin="-1.121,-1.352" Height="26" HorizontalContentAlignment="Right"/>
             <TextBox x:Name="txtEmail" HorizontalAlignment="Left" Height="26" Margin="303,160,0,0" TextWrapping="Wrap" Text="{Binding CustomerDetails.EmailAddress}" VerticalAlignment="Top" Width="213" RenderTransformOrigin="-0.248,-0.657" />

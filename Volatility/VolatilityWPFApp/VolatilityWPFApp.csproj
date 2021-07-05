@@ -71,6 +71,7 @@
       <DependentUpon>CustomerDetailsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="NotificationInfo.cs" />
+    <Compile Include="ValidationRules\NonEmptyValidationRule.cs" />
     <Compile Include="ViewModels\GenderView.cs" />
     <Compile Include="ViewModels\TitleView.cs" />
     <Compile Include="Extensions\Extensions.cs" />

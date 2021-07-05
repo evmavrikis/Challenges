@@ -6,6 +6,7 @@
 - The server console application launches a console window that  remains open and displays logging. Console keeps the application running, there is no loop in the Main. If the console closes, the server dies.
 - Only a single instance of the server can be launched.
 - The WPF client has a main window with a grid and a second window for the customer details. The latter is used for adding a new customer or viewing/editing an existing one.
+- The customer details window offers basic validation (non empty) on first name, last name and contact number.
 - There is a menu for all CRUD actions plus exit. All actions (New, Edit, Delete, Refresh) have short keys support (Ctrl + first letter of  the menu item header).
 - There is an additional Refresh button above the grid. The Delete key also works on the grid and has been integrated to the application functionality. There is no warning before the delete, I should  probably add one.
 - The data gird is set to  single row selection, so all operations are performed on the selected customer record.
