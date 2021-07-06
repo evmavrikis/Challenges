@@ -16,7 +16,7 @@
                       ItemsSource="{Binding Titles}"
                       DisplayMemberPath="Display"
                       SelectedValuePath="Id"
-                      SelectedValue="{Binding Path=CustomerDetails.Title}"
+                      SelectedValue="{Binding Path=Title}"
                       Width="86" Height="26" RenderTransformOrigin="1.245,0.589"/>
             <Label x:Name="lblGender" Content="Gender:" HorizontalAlignment="Left" Margin="228,10,0,0" VerticalAlignment="Top" Width="59" 
                    RenderTransformOrigin="-1.121,-1.352" Height="26" HorizontalContentAlignment="Right"/>
@@ -24,7 +24,7 @@
                       ItemsSource="{Binding Genders}"
                       DisplayMemberPath="Display"
                       SelectedValuePath="Id"
-                      SelectedValue="{Binding Path=CustomerDetails.Gender}"
+                      SelectedValue="{Binding Path=Gender}"
                       VerticalAlignment="Top" Width="77" Height="26" RenderTransformOrigin="1.245,0.589"/>
             <Label x:Name="lblFirstName" Content="First Name:" HorizontalAlignment="Left" Margin="53,55,0,0"
                    VerticalAlignment="Top" Width="74" RenderTransformOrigin="-1.121,-1.352" Height="26" HorizontalContentAlignment="Right"/>
@@ -34,7 +34,7 @@
                    RenderTransformOrigin="-1.121,-1.352" Height="26" HorizontalContentAlignment="Right"/>
             <TextBox x:Name="txtFirstName" HorizontalAlignment="Left" Height="26" Margin="137,50,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="227" RenderTransformOrigin="-0.248,-0.657">
                 <TextBox.Text>
-                    <Binding Path="CustomerDetails.FirstName" Mode="TwoWay"
+                    <Binding Path="FirstName" Mode="TwoWay"
                              ValidatesOnNotifyDataErrors="True"
                              ValidatesOnDataErrors="True"
                              NotifyOnValidationError="True">
@@ -46,7 +46,7 @@
             </TextBox>
             <TextBox x:Name="txtLastName" HorizontalAlignment="Left" Height="26" Margin="137,85,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="227" RenderTransformOrigin="-0.248,-0.657">
                 <TextBox.Text>
-                    <Binding Path="CustomerDetails.LastName" Mode="TwoWay"
+                    <Binding Path="LastName" Mode="TwoWay"
                              ValidatesOnNotifyDataErrors="True"
                              ValidatesOnDataErrors="True"
                              NotifyOnValidationError="True">
@@ -56,15 +56,15 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-            <TextBox x:Name="txtOtherNames" HorizontalAlignment="Left" Height="26" Margin="137,125,0,0" TextWrapping="Wrap" Text="{Binding CustomerDetails.OtherNames}" VerticalAlignment="Top" Width="379" RenderTransformOrigin="-0.248,-0.657"/>
-            <DatePicker x:Name="dtDOB"  SelectedDate="{Binding Path=CustomerDetails.DOB}" HorizontalAlignment="Left" Height="26"
+            <TextBox x:Name="txtOtherNames" HorizontalAlignment="Left" Height="26" Margin="137,125,0,0" TextWrapping="Wrap" Text="{Binding OtherNames}" VerticalAlignment="Top" Width="379" RenderTransformOrigin="-0.248,-0.657"/>
+            <DatePicker x:Name="dtDOB"  SelectedDate="{Binding Path=DOB}" HorizontalAlignment="Left" Height="26"
                         Margin="421,50,0,0" VerticalAlignment="Top" Width="96"/>
             <Label x:Name="label_Copy" Content="DOB:" HorizontalAlignment="Left" Margin="379,50,0,0" VerticalAlignment="Top" Width="37" RenderTransformOrigin="-1.121,-1.352" Height="26"/>
             <Label x:Name="lblContactNumber1" Content="Contact Number:" HorizontalAlignment="Left" Margin="25,156,0,0" VerticalAlignment="Top" 
                    Width="102" RenderTransformOrigin="-1.121,-1.352" Height="26" HorizontalContentAlignment="Right"/>
             <TextBox x:Name="txtContactNumber" HorizontalAlignment="Left" Height="26" Margin="137,160,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="96" RenderTransformOrigin="-0.248,-0.657" PreviewTextInput="txtContactNumber_PreviewTextInput">
                 <TextBox.Text>
-                    <Binding Path="CustomerDetails.ContactNumber" Mode="TwoWay"
+                    <Binding Path="ContactNumber" Mode="TwoWay"
                              ValidatesOnNotifyDataErrors="True"
                              ValidatesOnDataErrors="True"
                              NotifyOnValidationError="True">
@@ -76,16 +76,16 @@
             </TextBox> 
             <Label x:Name="lblContactNumber" Content="Email:" HorizontalAlignment="Left" Margin="247,160,0,0" VerticalAlignment="Top" 
                 Width="51" RenderTransformOrigin="-1.121,-1.352" Height="26" HorizontalContentAlignment="Right"/>
-            <TextBox x:Name="txtEmail" HorizontalAlignment="Left" Height="26" Margin="303,160,0,0" TextWrapping="Wrap" Text="{Binding CustomerDetails.EmailAddress}" VerticalAlignment="Top" Width="213" RenderTransformOrigin="-0.248,-0.657" />
+            <TextBox x:Name="txtEmail" HorizontalAlignment="Left" Height="26" Margin="303,160,0,0" TextWrapping="Wrap" Text="{Binding EmailAddress}" VerticalAlignment="Top" Width="213" RenderTransformOrigin="-0.248,-0.657" />
             <Label x:Name="lblPostalAddress1" Content="Postal Address Line 1:" HorizontalAlignment="Left" Margin="0,199,0,0" VerticalAlignment="Top" 
                 Width="127" RenderTransformOrigin="-1.121,-1.352" Height="26" HorizontalContentAlignment="Right"/>
             <Label x:Name="lblPostalAddress1_Copy" Content="Postal Address Line 2:" HorizontalAlignment="Left" Margin="-2,230,0,0" VerticalAlignment="Top" 
                 Width="129" RenderTransformOrigin="-1.121,-1.352" Height="26" HorizontalContentAlignment="Right"/>
             <Label x:Name="lblPostCode" Content="Postal Code:" HorizontalAlignment="Left" Margin="25,273,0,0" VerticalAlignment="Top" 
                 Width="97" RenderTransformOrigin="-1.121,-1.352" Height="26" HorizontalContentAlignment="Right"/>
-            <TextBox x:Name="txtAddress1" HorizontalAlignment="Left" Height="26" Margin="137,199,0,0" TextWrapping="Wrap" Text="{Binding Path=CustomerDetails.PostalAddressLine1}" VerticalAlignment="Top" Width="379" RenderTransformOrigin="-0.248,-0.657" />
-            <TextBox x:Name="txtAddress2" HorizontalAlignment="Left" Height="26" Margin="137,234,0,0" TextWrapping="Wrap" Text="{Binding Path=CustomerDetails.PostalAddressLine2}" VerticalAlignment="Top" Width="379" RenderTransformOrigin="-0.248,-0.657" />
-            <TextBox x:Name="txtPostCode" HorizontalAlignment="Left" Height="26" Margin="137,273,0,0" TextWrapping="Wrap" Text="{Binding CustomerDetails.PostCode}" VerticalAlignment="Top" Width="62" RenderTransformOrigin="-0.248,-0.657" />
+            <TextBox x:Name="txtAddress1" HorizontalAlignment="Left" Height="26" Margin="137,199,0,0" TextWrapping="Wrap" Text="{Binding Path=PostalAddressLine1}" VerticalAlignment="Top" Width="379" RenderTransformOrigin="-0.248,-0.657" />
+            <TextBox x:Name="txtAddress2" HorizontalAlignment="Left" Height="26" Margin="137,234,0,0" TextWrapping="Wrap" Text="{Binding Path=PostalAddressLine2}" VerticalAlignment="Top" Width="379" RenderTransformOrigin="-0.248,-0.657" />
+            <TextBox x:Name="txtPostCode" HorizontalAlignment="Left" Height="26" Margin="137,273,0,0" TextWrapping="Wrap" Text="{Binding PostCode}" VerticalAlignment="Top" Width="62" RenderTransformOrigin="-0.248,-0.657" />
             <Button x:Name="btnOk" Content="OK" HorizontalAlignment="Left" Height="25" Margin="238,0,0,5" VerticalAlignment="Bottom" Width="60" Click="btnOk_Click" RenderTransformOrigin="0.517,-0.2"/>
             <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="303,0,0,5" VerticalAlignment="Bottom" Width="60" Height="25" Click="btnCancel_Click"/>
             <Label x:Name="lblCustomerId" Content="{Binding CustomerDetails.Id}" Background="Beige" BorderThickness="1,1,1,1" BorderBrush="DimGray"
